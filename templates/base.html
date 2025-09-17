@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Risk & Compliance Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/main.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Real-Time Multi-Asset Risk & Compliance</h1>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <small>Demo MVP • Flask + SQLite • {{ now|default('') }}</small>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+body { font-family: system-ui, Arial; margin: 0; background: #0b1220; color: #eaf1ff; }
+header { padding: 16px 24px; border-bottom: 1px solid #1b2742; }
+h1 { margin: 0; font-size: 20px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
+.card { background: #121b31; border: 1px solid #1b2742; border-radius: 12px; padding: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px; border-bottom: 1px solid #1b2742; font-size: 14px; }
+select { background: #0b1220; color: #eaf1ff; padding: 6px 8px; border-radius: 8px; border: 1px solid #1b2742; }
+ul { list-style: none; padding-left: 0; margin: 0; }
+li { padding: 6px 0; border-bottom: 1px dashed #1b2742; }
+li.low { color: #8fd18b; } li.med { color: #ffd66b; } li.high { color: #ff8585; }
+@media (max-width: 900px){ .grid { grid-template-columns: 1fr; } }

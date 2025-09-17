@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="grid">
+  <div class="card">
+    <h2>Assets (Live)</h2>
+    <table id="assetsTbl">
+      <thead>
+        <tr>
+          <th>Symbol</th><th>Class</th><th>Last Price</th><th>Pos Limit</th><th>Δ% Limit</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Price Chart</h2>
+    <select id="symbolSelect"></select>
+    <canvas id="chart" height="160"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Latest Alerts</h2>
+    <ul id="alertsList"></ul>
+  </div>
+</section>
+
+<script>
+const assetsTblBody = document.querySelector("#assetsTbl tbody");
+const alertsList = document.querySelector("#alertsList");
+const symbolSelect = document.querySelector("#symbolSelect");
+let chart;
+async function fetchAssets(){
+  const r = await fetch("/api/assets"); const data = await r.json();
+  assetsTblBody.innerHTML = "";
+  symbolSelect.innerHTML = "";
+  data.forEach(a=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${a.symbol}</td>
+      <td>${a.class}</td>
+      <td>${a.latest_price?.toFixed ? a.latest_price.toFixed(2): a.latest_price}</td>
+      <td>${a.position_limit}</td>
+      <td>${a.price_limit_pct}%</td>`;
+    assetsTblBody.appendChild(tr);
+
+    const opt = document.createElement("option");
+    opt.value = a.symbol; opt.textContent = a.symbol;
+    symbolSelect.appendChild(opt);
+  });
+  if (data.length && !chart) { await drawChart(data[0].symbol); }
+}
+async function drawChart(symbol){
+  const r = await fetch(`/api/ticks/${symbol}`); const data = await r.json();
+  const labels = data.data.map(d=>new Date(d.ts).toLocaleTimeString());
+  const prices = data.data.map(d=>d.price);
+  const ctx = document.getElementById("chart");
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets: [{ label: symbol, data: prices }] },
+    options: { responsive: true, animation: false, scales: { y: { beginAtZero: false } } }
+  });
+}
+async function fetchAlerts(){
+  const r = await fetch("/api/alerts"); const data = await r.json();
+  alertsList.innerHTML = "";
+  data.forEach(a=>{
+    const li = document.createElement("li");
+    li.className = a.severity.toLowerCase();
+    li.textContent = `[${a.severity}] ${a.rule}: ${a.message}`;
+    alertsList.appendChild(li);
+  });
+}
+symbolSelect.addEventListener("change", e=> drawChart(e.target.value));
+setInterval(fetchAssets, 4000);
+setInterval(fetchAlerts, 4000);
+fetchAssets(); fetchAlerts();
+</script>
+{% endblock %}
