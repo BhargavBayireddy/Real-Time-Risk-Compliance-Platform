@@ -24,6 +24,16 @@ Financial institutions and corporates must ensure compliance while trading asset
 This platform shows how **ERP-like compliance dashboards** can reduce manual effort (35% faster checks) and prevent financial risk.  
 ➡ Example: Extend into **Oracle ERP Cloud** for automated invoice/trade blocking.  
 
+##  Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Alerts
+![Alerts](screenshots/Alerts.png)
+![Alerts](screenshots/Alerts2.png)
+
+
 ##  Getting Started
 Clone repo:
 ```bash
